@@ -16,6 +16,7 @@
 :root {
   font-family: "Sora", sans-serif;
   background-color: var(--color-neutral-900);
+  font-size: 16px;
 }
 
 @font-face {
@@ -24,4 +25,9 @@
   font-weight: 400 600 700;
   font-display: swap;
   src: url("./assets/fonts/Sora/Sora-VariableFont_wght.ttf") format("tff");
+}
+
+body {
+  padding: 12px;
+  max-width: 1212px;
 }
