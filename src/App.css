@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+@utility {
+  .stats {
+    @apply flex flex-col md:flex-row gap-4;
+  }
+}
+
