@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import data from "../../data.json";
 
 interface TypingTestProps {
   mode: "timed" | "passage";
@@ -12,12 +13,38 @@ interface TypingTestProps {
   personalBest: number | null;
 }
 
-const passages = {
-  easy: "The quick brown fox jumps over the lazy dog.",
-  medium: "Typing is a skill that improves with practice. Keep going!",
-  hard: 'The archaeological expedition unearthed artifacts that complicated prevailing theories about Bronze Age trade networks. Obsidian from Anatolia, lapis lazuli from Afghanistan, and amber from the Baltic—all discovered in a single Mycenaean tomb—suggested commercial connections far more extensive than previously hypothesized. "We\'ve underestimated ancient peoples\' navigational capabilities and their appetite for luxury goods," the lead researcher observed. "Globalization isn\'t as modern as we assume."',
-};
+// get random text - ensure the text gets randomised not only on refresh, but also when you click the restart btn
 
+const easy = data.easy;
+const medium = data.medium;
+const hard = data.hard;
+
+const easy_text = easy.map((text) => {
+  return text.text;
+});
+const medium_text = medium.map((text) => {
+  return text.text;
+});
+const hard_text = hard.map((text) => {
+  return text.text;
+});
+
+function getRandomText(array: string[]) {
+  const randomIndex = Math.floor(Math.random() * array.length);
+  return array[randomIndex];
+}
+
+const randomEasyText = getRandomText(easy_text);
+const randomMediumText = getRandomText(medium_text);
+const randomHardText = getRandomText(hard_text);
+
+console.log(easy_text);
+const passages = {
+  easy: randomEasyText,
+  medium: randomMediumText,
+  hard: randomHardText,
+};
+const currentTime = Date.now();
 const TypingTest: React.FC<TypingTestProps> = ({
   mode,
   difficulty,
@@ -30,9 +57,21 @@ const TypingTest: React.FC<TypingTestProps> = ({
   const [startTime, setStartTime] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const handleComplete = () => {
+    const timeElapsed = (currentTime - startTime) / 60000; // in minutes
+    const correct = typed
+      .split("")
+      .filter((char, i) => char === text[i]).length;
+    const incorrect = typed.length - correct;
+    const wpm = Math.round(correct / 5 / timeElapsed);
+    const accuracy =
+      typed.length > 0 ? Math.round((correct / typed.length) * 100) : 100;
+    completeTest(wpm, accuracy, correct, incorrect);
+  };
+
   useEffect(() => {
     inputRef.current?.focus();
-    setStartTime(Date.now());
+    setStartTime(currentTime);
     if (mode === "timed") {
       const timer = setInterval(() => {
         setTimeLeft((prev) => {
@@ -54,24 +93,12 @@ const TypingTest: React.FC<TypingTestProps> = ({
     }
   }, [typed]);
 
-  const handleComplete = () => {
-    const timeElapsed = (Date.now() - startTime) / 60000; // in minutes
-    const correct = typed
-      .split("")
-      .filter((char, i) => char === text[i]).length;
-    const incorrect = typed.length - correct;
-    const wpm = Math.round(correct / 5 / timeElapsed);
-    const accuracy =
-      typed.length > 0 ? Math.round((correct / typed.length) * 100) : 100;
-    completeTest(wpm, accuracy, correct, incorrect);
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTyped(e.target.value);
   };
 
   const renderText = () => {
-    return text.split("").map((char, i) => {
+    return text.split("").map((char: string, i: number) => {
       let color = "text-gray-500";
       if (i < typed.length) {
         color = typed[i] === char ? "text-green-500" : "text-red-500";
@@ -100,7 +127,7 @@ const TypingTest: React.FC<TypingTestProps> = ({
         <span>
           WPM:{" "}
           {Math.round(
-            typed.length / 5 / ((Date.now() - startTime) / 60000) || 0
+            typed.length / 5 / ((currentTime - startTime) / 60000) || 0
           )}
         </span>
         <span>
