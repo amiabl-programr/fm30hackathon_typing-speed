@@ -28,7 +28,7 @@ const StartScreen: React.FC<StartScreenProps> = ({
 
         <div className="flex items-center gap-2">
           <img src={personal_best_icon} alt="personal_best_icon" />
-          <span className="hidden md:inline">Presonal</span> Best:
+          <span className="hidden md:inline">Personal</span> Best:
           {personalBest} WPM
         </div>
       </div>
@@ -84,7 +84,12 @@ const StartScreen: React.FC<StartScreenProps> = ({
         </div>
       </div>
 
-      <div className="p-4 rounded mb-4 opacity-40 relative">
+      <div
+        className="p-4 rounded mb-4 opacity-40 relative"
+        onClick={() => {
+          startTest();
+        }}
+      >
         {/* Blurred placeholder text */}
         <p className="blur-xs text-[32px]">
           The sun rose over the quiet town. Birds sang in the trees as people
