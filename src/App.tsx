@@ -2,6 +2,8 @@ import { useState } from "react";
 import TypingTest from "./components/typing-test";
 import Results from "./components/results";
 import StartScreen from "./components/start-screen";
+import "./App.css";
+import "./index.css";
 
 function App() {
   const [mode, setMode] = useState<"timed" | "passage">("timed");
@@ -15,6 +17,11 @@ function App() {
   const [correctChars, setCorrectChars] = useState(0);
   const [incorrectChars, setIncorrectChars] = useState(0);
   const [personalBest, setPersonalBest] = useState<number | null>(null);
+
+  const getPersonalBest = () => {
+    const storedBest = localStorage.getItem("personalBest");
+    if (storedBest) setPersonalBest(parseInt(storedBest, 10));
+  };
 
   const startTest = () => {
     setTestStarted(true);
@@ -43,6 +50,7 @@ function App() {
   const reset = () => {
     setTestCompleted(false);
     setTestStarted(false);
+    getPersonalBest();
   };
 
   return (
