@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import logo_small from "../assets/images/logo-small.svg";
 import logo_large from "../assets/images/logo-large.svg";
+import personal_best_icon from "../assets/images/icon-personal-best.svg";
 
 interface StartScreenProps {
   mode: "timed" | "passage";
@@ -24,11 +25,12 @@ const StartScreen: React.FC<StartScreenProps> = ({
       <div className="flex justify-between items-center mb-4">
         <img src={logo_small} alt="logo" className="md:hidden" />
         <img src={logo_large} alt="logo" className="hidden md:flex" />
-        {personalBest && (
-          <span className="text-yellow-400">
-            Personal Best: {personalBest} WPM
-          </span>
-        )}
+
+        <div className="flex items-center gap-2">
+          <img src={personal_best_icon} alt="personal_best_icon" />
+          <span className="hidden md:inline">Presonal</span> Best:
+          {personalBest} WPM
+        </div>
       </div>
       <div className="flex items-center space-x-4 mb-4">
         <span>WPM: 0</span>
@@ -81,19 +83,26 @@ const StartScreen: React.FC<StartScreenProps> = ({
           </button>
         </div>
       </div>
-      <div className="bg-gray-800 p-4 rounded mb-4 text-gray-500">
+
+      <div className="p-4 rounded mb-4 opacity-40 relative">
         {/* Blurred placeholder text */}
-        <p>The text to type will appear here once you start...</p>
+        <p className="blur-xs text-[32px]">
+          The sun rose over the quiet town. Birds sang in the trees as people
+          woke up and started their day. It was going to be a warm and sunny
+          morning.
+        </p>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <button
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+            onClick={startTest}
+          >
+            Start Typing Test
+          </button>
+          <p className="text-sm text-gray-400 mt-2">
+            Or click the text and start typing
+          </p>
+        </div>
       </div>
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded"
-        onClick={startTest}
-      >
-        Start Typing Test
-      </button>
-      <p className="text-sm text-gray-400 mt-2">
-        Or click the text and start typing
-      </p>
     </div>
   );
 };
