@@ -1,4 +1,6 @@
 import type { Dispatch, SetStateAction } from "react";
+import logo_small from "../assets/images/logo-small.svg";
+import logo_large from "../assets/images/logo-large.svg";
 
 interface StartScreenProps {
   mode: "timed" | "passage";
@@ -20,7 +22,8 @@ const StartScreen: React.FC<StartScreenProps> = ({
   return (
     <div className="w-full max-w-2xl">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Typing Speed Test</h1>
+        <img src={logo_small} alt="logo" className="md:hidden" />
+        <img src={logo_large} alt="logo" className="hidden md:flex" />
         {personalBest && (
           <span className="text-yellow-400">
             Personal Best: {personalBest} WPM
