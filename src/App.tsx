@@ -71,6 +71,7 @@ function App() {
           difficulty={difficulty}
           completeTest={completeTest}
           personalBest={personalBest}
+          reset={reset}
         />
       )}
       {testCompleted && (
